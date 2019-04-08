@@ -124,7 +124,7 @@ func main() {
 		fmt.Println(reflect.TypeOf(msg))
 
 		// body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
-		body, err := json.Marshal(&msg) //struct转->返回[]byte字符串
+		body, err := json.Marshal(msg) //struct转->返回[]byte字符串
 		if err != nil {
 			fmt.Println("json转换错误", err)
 		} else {
