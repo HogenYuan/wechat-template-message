@@ -121,6 +121,7 @@ func main() {
 			// 	}
 		}
 		fmt.Printf("msg:%+v\n", msg)
+		fmt.Println(reflect.TypeOf(msg))
 
 		body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
 		if err != nil {
