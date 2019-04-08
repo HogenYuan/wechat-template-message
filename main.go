@@ -23,7 +23,7 @@ type TextMsg struct {
 type PicMessage struct {
 	Touser  string  `json:"touser"`
 	Msgtype string  `json:"msgtype"`
-	News    NewsMsg `json:"NewsMsg"`
+	News    NewsMsg `json:"news"`
 }
 type NewsMsg struct {
 	Articles ArticlesMsg `json:"articles"`
