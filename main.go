@@ -13,20 +13,20 @@ import (
 )
 
 type Message struct {
-	Touser  string  `json:"touser"`
-	Msgtype string  `json:"msgtype"`
-	Text    TextMsg `json:"text"`
+	touser  string  `json:"touser"`
+	msgtype string  `json:"msgtype"`
+	text    TextMsg `json:"text"`
 }
 type TextMsg struct {
-	Content string `json:"content"`
+	content string `json:"content"`
 }
 type PicMessage struct {
-	Touser  string `json:"touser"`
-	Msgtype string `json:"msgtype"`
-	Image   PicMsg `json:"media_id"`
+	touser  string `json:"touser"`
+	msgtype string `json:"msgtype"`
+	image   PicMsg `json:"media_id"`
 }
 type PicMsg struct {
-	Media_id string `json:"media_id"`
+	media_id string `json:"media_id"`
 }
 
 type TemplateMsg struct {
@@ -99,9 +99,9 @@ func main() {
 		// 	text:    TextMsg{content: c.DefaultPostForm("content", "")},
 		// }
 		msg := &Message{
-			Touser:  openid,
-			Msgtype: "text",
-			Text:    TextMsg{Content: "fff"},
+			touser:  openid,
+			msgtype: "text",
+			text:    TextMsg{content: "fff"},
 		}
 		if mess_type == "1" {
 			// 	//文字消息
@@ -166,6 +166,7 @@ func main() {
 		c.String(200, "STOP success")
 		manners.Close()
 	})
+
 
 	manners.ListenAndServe(":7767", r)
 }
