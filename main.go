@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
+	"reflect"
 	// "net/url"
 	"os"
 )
@@ -125,6 +126,7 @@ func main() {
 		if err != nil {
 			fmt.Println("json转换错误", err)
 		} else {
+			fmt.Println(reflect.TypeOf(body))
 			fmt.Printf("转换%+v\n", body)
 			fmt.Printf("转换str%s\n", body)
 		}
