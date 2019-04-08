@@ -163,7 +163,6 @@ func main() {
 	//获取pid
 	r.GET("/pid", func(c *gin.Context) {
 		c.String(200, "PID:  %d", os.Getpid())
-		// ioutil.WriteFile("./pid", os.Getpid(), 0666);
 	})
 
 	//停止任务
@@ -172,5 +171,11 @@ func main() {
 		manners.Close()
 	})
 
+	pid := fmt.Sprint(os.Getpid())
+	piderr := ioutil.WriteFile("./pid",  []byte(pid) , 0666);
+
 	manners.ListenAndServe(":7767", r)
+
+
 }
+
