@@ -26,7 +26,13 @@ type PicMessage struct {
 	News    NewsMsg `json:"news"`
 }
 type NewsMsg struct {
-	Articles map[string]string `json:"articles"`
+	Articles []ArticlesMsg `json:"articles"`
+}
+type ArticlesMsg struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Url         string `json:"url"`
+	Picurl      string `json:"picurl"`
 }
 type TemplateMsg struct {
 	Touser      string                   `json:"touser"`      //接收者的OpenID
@@ -99,16 +105,18 @@ func main() {
 		} else if mess_type == "2" {
 			//图文消息
 			post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
+			var msgs []ArticlesMsg
+			msgs[0] = ArticlesMsg{
+				Title:       c.DefaultPostForm("title", ""),
+				Description: c.DefaultPostForm("description", ""),
+				Url:         c.DefaultPostForm("url", ""),
+				Picurl:      c.DefaultPostForm("picurl", ""),
+			}
 			msg = &PicMessage{
 				Touser:  openid,
 				Msgtype: "news",
 				News: NewsMsg{
-					Articles: map[string]string{
-						"title":       c.DefaultPostForm("title", ""),
-						"description": c.DefaultPostForm("description", ""),
-						"url":         c.DefaultPostForm("url", ""),
-						"picurl":      c.DefaultPostForm("picurl", ""),
-					},
+					Articles: msgs,
 				},
 			}
 		} else if mess_type == "0" {
