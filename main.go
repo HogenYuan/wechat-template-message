@@ -91,7 +91,7 @@ func main() {
 		// 	msgtype: "text",
 		// 	text:    TextMsg{content: c.DefaultPostForm("content", "")},
 		// }
-		msg := Message{
+		msg := &Message{
 			touser:  openid,
 			msgtype: "text",
 			text:    TextMsg{content: "fff"},
@@ -128,7 +128,7 @@ func main() {
 		} else {
 			fmt.Println(reflect.TypeOf(body))
 			fmt.Printf("转换%+v\n", body)
-			fmt.Printf("转换str%s\n", body)
+			fmt.Printf("转换str%s\n", string(body))
 		}
 		//发送请求
 		req, err := http.NewRequest("POST", post_url, bytes.NewReader(body))
