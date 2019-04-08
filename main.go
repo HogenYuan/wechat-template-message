@@ -84,7 +84,6 @@ func main() {
 		// post_url := "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
 
 		mess_type := c.PostForm("mess_type")
-		content := c.PostForm("content")
 
 		post := c.PostForm("post")
 		fmt.Println("读取content\n", content)
