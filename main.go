@@ -21,17 +21,23 @@ type TextMsg struct {
 	Content string `json:"content"`
 }
 type PicMessage struct {
-	Touser  string `json:"touser"`
-	Msgtype string `json:"msgtype"`
-	Image   PicMsg `json:"media_id"`
+	Touser  string  `json:"touser"`
+	Msgtype string  `json:"msgtype"`
+	News    NewsMsg `json:"NewsMsg"`
 }
-type PicMsg struct {
-	Media_id string `json:"media_id"`
+type NewsMsg struct {
+	Articles ArticlesMsg `json:"articles"`
+}
+type ArticlesMsg struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Url         string `json:"url"`
+	Picurl      string `json:"picurl"`
 }
 type TemplateMsg struct {
 	Touser      string                   `json:"touser"`      //接收者的OpenID
-	TemplateID  string                   `json:"template_id"` //模板消息ID
-	URL         string                   `json:"url"`         //点击后跳转链接
+	Templateid  string                   `json:"template_id"` //模板消息ID
+	Url         string                   `json:"url"`         //点击后跳转链接
 	Miniprogram Miniprogram              `json:"miniprogram"` //点击跳转小程序
 	Data        map[string]*TemplateData `json:"data"`
 }
@@ -78,43 +84,50 @@ func main() {
 
 		// post_url := "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
 
-		// mess_type := c.PostForm("mess_type")
+		mess_type := c.PostForm("mess_type")
 		//格式转换
-		post_url := "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
-		msg := &Message{
-			Touser:  openid,
-			Msgtype: "text",
-			Text:    TextMsg{Content: c.DefaultPostForm("content", "")},
-		}
-		// msg := struct{}{}
-		// if mess_type == "1" {
-		// 	//文字消息
-		// 	post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
-		// 	msg = &Message{
-		// 		Touser:  openid,
-		// 		Msgtype: "text",
-		// 		Text:    TextMsg{Content: content},
-		// 	}
-		// } else if mess_type == "2" {
-		// 	msg = 2
-		// 	//图文消息
-		// 	// post_url := "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
-		// 	// var msg = &PicMessage{
-		// 	// 	Touser:  openid,
-		// 	// 	Msgtype: "image",
-		// 	// 	Image:    PicMsg{Media_id:['media_id']},
-		// 	// }
-		// } else if mess_type == "0" {
-		// 	msg = 1
-		// 	//模板消息
-		// 	// post_url := "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
-		// 	// var msg = &TemplateMsg{
-		// 	// 	Touser: openid,
-		// 	// 	Template_id:log["tempid"],
-		// 	// }
-		// } else {
-		// 	msg = 0
+		// post_url := "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
+		// msg := &PicMessage{
+		// 	Touser:  openid,
+		// 	Msgtype: "news",
+		// 	Text:    TextMsg{Content: c.DefaultPostForm("content", "")},
 		// }
+		var msg interface{}
+		post_url := ""
+		if mess_type == "1" {
+			//文字消息
+			post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
+			msg = &Message{
+				Touser:  openid,
+				Msgtype: "text",
+				Text:    TextMsg{Content: c.DefaultPostForm("content", "")},
+			}
+		} else if mess_type == "2" {
+			//图文消息
+			post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
+			msg = &PicMessage{
+				Touser:  openid,
+				Msgtype: "news",
+				News: NewsMsg{
+					Articles: ArticlesMsg{
+						Title:       c.DefaultPostForm("title", ""),
+						Description: c.DefaultPostForm("Description", ""),
+						Url:         c.DefaultPostForm("Url", ""),
+						Picurl:      c.DefaultPostForm("Picurl", ""),
+					},
+				},
+			}
+		} else if mess_type == "0" {
+			msg = 1
+			//模板消息
+			post_url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
+			// msg = &TemplateMsg{
+			// 	Touser: openid,
+			// 	Template_id:log["tempid"],
+			// }
+		} else {
+			msg = 0
+		}
 		fmt.Printf("msg:%+v\n", msg)
 
 		body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
