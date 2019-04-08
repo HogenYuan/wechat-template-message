@@ -8,26 +8,25 @@ import (
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
-	"reflect"
 	// "net/url"
 	"os"
 )
 
 type Message struct {
-	Touser  string  `json:"touser"`
-	Msgtype string  `json:"msgtype"`
-	Text    TextMsg `json:"text"`
+	touser  string  `json:"touser"`
+	msgtype string  `json:"msgtype"`
+	text    TextMsg `json:"text"`
 }
 type TextMsg struct {
-	Content string `json:"content"`
+	content string `json:"content"`
 }
 type PicMessage struct {
-	Touser  string `json:"touser"`
-	Msgtype string `json:"msgtype"`
-	Image   PicMsg `json:"media_id"`
+	touser  string `json:"touser"`
+	msgtype string `json:"msgtype"`
+	image   PicMsg `json:"media_id"`
 }
 type PicMsg struct {
-	Media_id string `json:"media_id"`
+	media_id string `json:"media_id"`
 }
 
 type TemplateMsg struct {
@@ -83,6 +82,10 @@ func main() {
 		// post_url := "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
 
 		mess_type := c.PostForm("mess_type")
+		content := c.PostForm("content")
+		post := c.PostForm("post")
+		fmt.Println("读取content\n", content)
+		fmt.Printf("读取post%+v\n", post)
 		fmt.Println("读取mess_type\n", mess_type)
 		//格式转换
 		post_url := "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
@@ -92,9 +95,9 @@ func main() {
 		// 	text:    TextMsg{content: c.DefaultPostForm("content", "")},
 		// }
 		msg := &Message{
-			Touser:  openid,
-			Msgtype: "text",
-			Text:    TextMsg{Content: "fff"},
+			touser:  openid,
+			msgtype: "text",
+			text:    TextMsg{content: "fff"},
 		}
 		if mess_type == "1" {
 			// 	//文字消息
@@ -122,12 +125,12 @@ func main() {
 		}
 		fmt.Printf("msg:%+v\n", msg)
 
-		// body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
-		body, err := json.Marshal(msg) //struct转->返回[]byte字符串
+		body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
 		if err != nil {
 			fmt.Println("json转换错误", err)
 		} else {
 			fmt.Printf("转换%+v\n", body)
+			fmt.Printf("转换str%s\n", body)
 		}
 		//发送请求
 		req, err := http.NewRequest("POST", post_url, bytes.NewReader(body))
