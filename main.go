@@ -13,26 +13,25 @@ import (
 )
 
 type Message struct {
-	touser  string  `json:"touser"`
-	msgtype string  `json:"msgtype"`
-	text    TextMsg `json:"text"`
+	Touser  string  `json:"touser"`
+	Msgtype string  `json:"msgtype"`
+	Text    TextMsg `json:"text"`
 }
 type TextMsg struct {
-	content string `json:"content"`
+	Content string `json:"content"`
 }
 type PicMessage struct {
-	touser  string `json:"touser"`
-	msgtype string `json:"msgtype"`
-	image   PicMsg `json:"media_id"`
+	Touser  string  `json:"touser"`
+	Msgtype string  `json:"msgtype"`
+	News    NewsMsg `json:"news"`
 }
-type PicMsg struct {
-	media_id string `json:"media_id"`
+type NewsMsg struct {
+	Articles map[string]string `json:"articles"`
 }
-
 type TemplateMsg struct {
 	Touser      string                   `json:"touser"`      //接收者的OpenID
-	TemplateID  string                   `json:"template_id"` //模板消息ID
-	URL         string                   `json:"url"`         //点击后跳转链接
+	Templateid  string                   `json:"template_id"` //模板消息ID
+	Url         string                   `json:"url"`         //点击后跳转链接
 	Miniprogram Miniprogram              `json:"miniprogram"` //点击跳转小程序
 	Data        map[string]*TemplateData `json:"data"`
 }
@@ -68,10 +67,6 @@ func main() {
 		}
 		ac_token := c.PostForm("ac_token")
 		openid := c.PostForm("openid")
-		logJson := c.PostForm("log")
-		content := c.PostForm("content")
-		fmt.Printf("LogJson %+v \n", logJson)
-		fmt.Println("content \n", content)
 		// log := make(map[string]interface{})
 		// err := json.Unmarshal([]byte(logJson), &log)
 		// fmt.Printf("读取转换数据 %v \n", log)
@@ -84,47 +79,48 @@ func main() {
 		// post_url := "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
 
 		mess_type := c.PostForm("mess_type")
-
-		post := c.PostForm("post")
-		fmt.Println("读取content\n", content)
-		fmt.Printf("读取post%+v\n", post)
-
-		fmt.Println("读取mess_type\n", mess_type)
 		//格式转换
-		post_url := "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
-		// msg := &Message{
-		// 	touser:  openid,
-		// 	msgtype: "text",
-		// 	text:    TextMsg{content: c.DefaultPostForm("content", "")},
+		// post_url := "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
+		// msg := &PicMessage{
+		// 	Touser:  openid,
+		// 	Msgtype: "news",
+		// 	Text:    TextMsg{Content: c.DefaultPostForm("content", "")},
 		// }
-		msg := &Message{
-			touser:  openid,
-			msgtype: "text",
-			text:    TextMsg{content: "fff"},
-		}
+		var msg interface{}
+		post_url := ""
 		if mess_type == "1" {
-			// 	//文字消息
-			// post_url := "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
-			// msg := &Message{
-			// 	touser:  openid,
-			// 	msgtype: "text",
-			// 	text:    TextMsg{content: "xx"},
-			// }
+			//文字消息
+			post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
+			msg = &Message{
+				Touser:  openid,
+				Msgtype: "text",
+				Text:    TextMsg{Content: c.DefaultPostForm("content", "")},
+			}
 		} else if mess_type == "2" {
-			// 	//图文消息
-			// 	post_url := "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
-			// 	var msg = &PicMessage{
-			// 		touser:  openid,
-			// 		msgtype: "image",
-			// 		image:    PicMsg{media_id:log['media_id']},
-			// }
+			//图文消息
+			post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
+			msg = &PicMessage{
+				Touser:  openid,
+				Msgtype: "news",
+				News: NewsMsg{
+					Articles: map[string]string{
+						"title":       c.DefaultPostForm("title", ""),
+						"description": c.DefaultPostForm("description", ""),
+						"url":         c.DefaultPostForm("url", ""),
+						"picurl":      c.DefaultPostForm("picurl", ""),
+					},
+				},
+			}
 		} else if mess_type == "0" {
-			// 	//模板消息
-			// 	post_url := "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
-			// 	var msg = &TempMessage{
-			// 		touser: openid,
-			// 		template_id:log["tempid"],
-			// 	}
+			msg = 1
+			//模板消息
+			post_url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
+			// msg = &TemplateMsg{
+			// 	Touser: openid,
+			// 	Template_id:log["tempid"],
+			// }
+		} else {
+			msg = 0
 		}
 		fmt.Printf("msg:%+v\n", msg)
 
@@ -159,7 +155,6 @@ func main() {
 	//获取pid
 	r.GET("/pid", func(c *gin.Context) {
 		c.String(200, "PID:  %d", os.Getpid())
-
 	})
 
 	//停止任务
