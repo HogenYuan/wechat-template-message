@@ -111,9 +111,9 @@ func main() {
 				News: NewsMsg{
 					Articles: ArticlesMsg{
 						Title:       c.DefaultPostForm("title", ""),
-						Description: c.DefaultPostForm("Description", ""),
-						Url:         c.DefaultPostForm("Url", ""),
-						Picurl:      c.DefaultPostForm("Picurl", ""),
+						Description: c.DefaultPostForm("description", ""),
+						Url:         c.DefaultPostForm("url", ""),
+						Picurl:      c.DefaultPostForm("picurl", ""),
 					},
 				},
 			}
