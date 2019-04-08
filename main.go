@@ -26,7 +26,7 @@ type PicMessage struct {
 	News    NewsMsg `json:"news"`
 }
 type NewsMsg struct {
-	Articles []ArticlesMsg `json:"articles"`
+	Articles [1]ArticlesMsg `json:"articles"`
 }
 type ArticlesMsg struct {
 	Title       string `json:"title"`
