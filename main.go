@@ -105,7 +105,7 @@ func main() {
 		} else if mess_type == "2" {
 			//图文消息
 			post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
-			var msgs []ArticlesMsg
+			var msgs [1]ArticlesMsg
 			msgs[0] = ArticlesMsg{
 				Title:       c.DefaultPostForm("title", ""),
 				Description: c.DefaultPostForm("description", ""),
