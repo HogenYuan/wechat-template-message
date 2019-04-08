@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/braintree/manners"
 	"github.com/gin-gonic/gin"
+	"github.com/goinggo/mapstructure"
 	"io/ioutil"
 	"net/http"
 	// "net/url"
@@ -128,13 +129,15 @@ func main() {
 				fmt.Println("error", err)
 			}
 			fmt.Printf("dataMsg:%+v\n", map1)
-			var dataMsg map[string]*KeyWordData
+			// var dataMsg map[string]*KeyWordData
 			for k, v := range map1 {
 				fmt.Printf("k值:%s,v值:%s\n", k, v)
-				// dataMsg[k] = &KeyWordData{
-				// 	Value: v.value,
-				// 	Color: v.color,
-				// }
+				var keyword KeyWordData
+				err := mapstructure.Decode(v, &keyword) //map转struct
+				if err != nil {
+					fmt.Println(err)
+				}
+				fmt.Printf("keyword值%+v\n", keyword)
 			}
 			//模板消息
 			post_url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
@@ -146,7 +149,7 @@ func main() {
 					Appid:    c.DefaultPostForm("appid", ""),
 					Pagepath: c.DefaultPostForm("pagepath", ""),
 				},
-				Data: dataMsg,
+				// Data: dataMsg
 			}
 		} else {
 			msg = 0
