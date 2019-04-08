@@ -148,7 +148,7 @@ func main() {
 	//获取pid
 	r.GET("/pid", func(c *gin.Context) {
 		c.String(200, "PID:  %d", os.Getpid())
-		ioutil.WriteFile("./pid", os.Getpid(), 0666);
+		// ioutil.WriteFile("./pid", os.Getpid(), 0666);
 	})
 
 	//停止任务
