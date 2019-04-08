@@ -131,7 +131,7 @@ func main() {
 			fmt.Printf("转换%+v\n", body)
 			fmt.Println(string(body))
 		}
-		zzz, _ := json.Marshal(body) //struct转->返回[]byte字符串
+		zzz, _ := json.Marshal(msg) //struct转->返回[]byte字符串
 		fmt.Println(string(zzz))
 		//发送请求
 		req, err := http.NewRequest("POST", post_url, bytes.NewReader(body))
