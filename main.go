@@ -122,12 +122,12 @@ func main() {
 		} else if mess_type == "0" {
 			msg = 0
 			tempMsg_json := c.PostForm("example")
-			var dataMsg DataMsg
-			err := json.Unmarshal([]byte(tempMsg_json), &dataMsg)
+			map1 := make(map[string]*DataMsg)
+			err := json.Unmarshal([]byte(tempMsg_json), &map1)
 			if err != nil {
 				fmt.Println("error", err)
 			}
-			fmt.Printf("dataMsg:%+v\n", dataMsg)
+			fmt.Printf("dataMsg:%+v\n", map1)
 			// for k,v ;= range tempMsg{
 
 			// }
@@ -141,9 +141,7 @@ func main() {
 					Appid:    c.DefaultPostForm("appid", ""),
 					Pagepath: c.DefaultPostForm("pagepath", ""),
 				},
-				// Data: DataMsg{
-				// 	First:
-				// },
+				Data: map1,
 			}
 		} else {
 			msg = 0
