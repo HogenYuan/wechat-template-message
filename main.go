@@ -128,9 +128,9 @@ func main() {
 				fmt.Println("error", err)
 			}
 			fmt.Printf("dataMsg:%+v\n", map1)
-			// for k,v ;= range tempMsg{
-
-			// }
+			for k, v := range map1 {
+				fmt.Printf("k值:%s,v值:%s\n", k, v)
+			}
 			//模板消息
 			post_url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
 			msg = &TemplateMsg{
