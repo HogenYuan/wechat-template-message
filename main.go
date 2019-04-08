@@ -120,12 +120,12 @@ func main() {
 				},
 			}
 		} else if mess_type == "0" {
-			msg = 1
+			msg = 0
 			//模板消息
 			post_url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
 			// msg = &TemplateMsg{
-			// 	Touser: openid,
-			// 	Template_id:log["tempid"],
+			// 	Touser:      openid,
+			// 	Template_id: log["tempid"],
 			// }
 		} else {
 			msg = 0
