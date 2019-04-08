@@ -126,6 +126,7 @@ func main() {
 			fmt.Println("json转换错误", err)
 		} else {
 			fmt.Printf("转换%+v\n", body)
+			fmt.Printf("转换str%s\n", body)
 		}
 		//发送请求
 		req, err := http.NewRequest("POST", post_url, bytes.NewReader(body))
