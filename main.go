@@ -14,15 +14,15 @@ import (
 )
 
 type Message struct {
-	touser  string  `json:"touser"`
-	msgtype string  `json:"msgtype"`
-	text    TextMsg `json:"text"`
+	Touser  string  `json:"touser"`
+	Msgtype string  `json:"msgtype"`
+	Text    TextMsg `json:"text"`
 }
 type TextMsg struct {
-	content string `json:"content"`
+	Content string `json:"content"`
 }
 type PicMessage struct {
-	touser  string `json:"touser"`
+	tosuer  string `json:"touser"`
 	msgtype string `json:"msgtype"`
 	image   PicMsg `json:"media_id"`
 }
@@ -92,9 +92,9 @@ func main() {
 		// 	text:    TextMsg{content: c.DefaultPostForm("content", "")},
 		// }
 		msg := &Message{
-			touser:  openid,
-			msgtype: "text",
-			text:    TextMsg{content: "fff"},
+			Touser:  openid,
+			Msgtype: "text",
+			Text:    TextMsg{Content: "fff"},
 		}
 		if mess_type == "1" {
 			// 	//文字消息
