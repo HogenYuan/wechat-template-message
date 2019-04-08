@@ -35,11 +35,11 @@ type ArticlesMsg struct {
 	Picurl      string `json:"picurl"`
 }
 type TemplateMsg struct {
-	Touser      string              `json:"touser"`                //接收者的OpenID
-	Template_id string              `json:"template_id"`           //模板消息ID
-	Url         string              `json:"url"`                   //点击后跳转链接
-	Miniprogram MiniprogramMsg      `json:"miniprogram,omitempty"` //点击跳转小程序
-	Data        map[string]*DataMsg `json:"data"`
+	Touser      string                  `json:"touser"`                //接收者的OpenID
+	Template_id string                  `json:"template_id"`           //模板消息ID
+	Url         string                  `json:"url"`                   //点击后跳转链接
+	Miniprogram MiniprogramMsg          `json:"miniprogram,omitempty"` //点击跳转小程序
+	Data        map[string]*KeyWordData `json:"data"`
 }
 type MiniprogramMsg struct {
 	Appid    string `json:"appid"`
@@ -122,14 +122,19 @@ func main() {
 		} else if mess_type == "0" {
 			msg = 0
 			tempMsg_json := c.PostForm("example")
-			map1 := make(map[string]interface{})
+			map1 := make(map[string]KeyWordData)
 			err := json.Unmarshal([]byte(tempMsg_json), &map1)
 			if err != nil {
 				fmt.Println("error", err)
 			}
 			fmt.Printf("dataMsg:%+v\n", map1)
+			var dataMsg map[string]*KeyWordData
 			for k, v := range map1 {
 				fmt.Printf("k值:%s,v值:%s\n", k, v)
+				// dataMsg[k] = &KeyWordData{
+				// 	Value: v.value,
+				// 	Color: v.color,
+				// }
 			}
 			//模板消息
 			post_url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
@@ -141,7 +146,7 @@ func main() {
 					Appid:    c.DefaultPostForm("appid", ""),
 					Pagepath: c.DefaultPostForm("pagepath", ""),
 				},
-				// Data: map1,
+				Data: dataMsg,
 			}
 		} else {
 			msg = 0
