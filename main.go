@@ -35,10 +35,10 @@ type ArticlesMsg struct {
 	Picurl      string `json:"picurl"`
 }
 type TemplateMsg struct {
-	Touser      string              `json:"touser"`      //接收者的OpenID
-	Template_id string              `json:"template_id"` //模板消息ID
-	Url         string              `json:"url"`         //点击后跳转链接
-	Miniprogram MiniprogramMsg      `json:"miniprogram"` //点击跳转小程序
+	Touser      string              `json:"touser"`                //接收者的OpenID
+	Template_id string              `json:"template_id"`           //模板消息ID
+	Url         string              `json:"url"`                   //点击后跳转链接
+	Miniprogram MiniprogramMsg      `json:"miniprogram,omitempty"` //点击跳转小程序
 	Data        map[string]*DataMsg `json:"data"`
 }
 type MiniprogramMsg struct {
