@@ -127,7 +127,7 @@ func main() {
 			if err != nil {
 				fmt.Println("error", err)
 			}
-			fmt.Printf("%+v", dataMsg)
+			fmt.Printf("dataMsg:%+v\n", dataMsg)
 			// for k,v ;= range tempMsg{
 
 			// }
