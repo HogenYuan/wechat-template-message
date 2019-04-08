@@ -35,18 +35,18 @@ type ArticlesMsg struct {
 	Picurl      string `json:"picurl"`
 }
 type TemplateMsg struct {
-	Touser      string                   `json:"touser"`      //接收者的OpenID
-	Templateid  string                   `json:"template_id"` //模板消息ID
-	Url         string                   `json:"url"`         //点击后跳转链接
-	Miniprogram Miniprogram              `json:"miniprogram"` //点击跳转小程序
-	Data        map[string]*TemplateData `json:"data"`
+	Touser      string              `json:"touser"`      //接收者的OpenID
+	Template_id string              `json:"template_id"` //模板消息ID
+	Url         string              `json:"url"`         //点击后跳转链接
+	Miniprogram MiniprogramMsg      `json:"miniprogram"` //点击跳转小程序
+	Data        map[string]*DataMsg `json:"data"`
 }
-type Miniprogram struct {
-	AppID    string `json:"appid"`
+type MiniprogramMsg struct {
+	Appid    string `json:"appid"`
 	Pagepath string `json:"pagepath"`
 }
 
-type TemplateData struct {
+type DataMsg struct {
 	First    KeyWordData `json:"first,omitempty"`
 	Keyword1 KeyWordData `json:"keyword1,omitempty"`
 	Keyword2 KeyWordData `json:"keyword2,omitempty"`
@@ -121,12 +121,30 @@ func main() {
 			}
 		} else if mess_type == "0" {
 			msg = 0
+			tempMsg_json := c.PostForm("example")
+			var dataMsg DataMsg
+			err := json.Unmarshal([]byte(tempMsg_json), &dataMsg)
+			if err != nil {
+				fmt.Println("error", err)
+			}
+			fmt.Printf("%+v", dataMsg)
+			// for k,v ;= range tempMsg{
+
+			// }
 			//模板消息
 			post_url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
-			// msg = &TemplateMsg{
-			// 	Touser:      openid,
-			// 	Template_id: log["tempid"],
-			// }
+			msg = &TemplateMsg{
+				Touser:      openid,
+				Template_id: c.DefaultPostForm("template_id", ""),
+				Url:         c.DefaultPostForm("url", ""),
+				Miniprogram: MiniprogramMsg{
+					Appid:    c.DefaultPostForm("appid", ""),
+					Pagepath: c.DefaultPostForm("pagepath", ""),
+				},
+				// Data: DataMsg{
+				// 	First:
+				// },
+			}
 		} else {
 			msg = 0
 		}
