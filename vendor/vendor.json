@@ -1,0 +1,11 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"path": "github.com/hogen/wechat_message",
+			"revision": ""
+		}
+	],
+	"rootPath": "github.com/hogen/wechat_message"
+}

@@ -22,12 +22,12 @@ type TextMsg struct {
 	Content string `json:"content"`
 }
 type PicMessage struct {
-	tosuer  string `json:"touser"`
-	msgtype string `json:"msgtype"`
-	image   PicMsg `json:"media_id"`
+	Touser  string `json:"touser"`
+	Msgtype string `json:"msgtype"`
+	Image   PicMsg `json:"media_id"`
 }
 type PicMsg struct {
-	media_id string `json:"media_id"`
+	Media_id string `json:"media_id"`
 }
 
 type TemplateMsg struct {
@@ -121,16 +121,13 @@ func main() {
 			// 	}
 		}
 		fmt.Printf("msg:%+v\n", msg)
-		fmt.Println(reflect.TypeOf(msg))
 
 		// body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
 		body, err := json.Marshal(msg) //struct转->返回[]byte字符串
 		if err != nil {
 			fmt.Println("json转换错误", err)
 		} else {
-			fmt.Println(reflect.TypeOf(body))
 			fmt.Printf("转换%+v\n", body)
-			fmt.Println(string(body))
 		}
 		//发送请求
 		req, err := http.NewRequest("POST", post_url, bytes.NewReader(body))
