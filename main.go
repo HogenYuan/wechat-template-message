@@ -122,7 +122,7 @@ func main() {
 		} else if mess_type == "0" {
 			msg = 0
 			tempMsg_json := c.PostForm("example")
-			map1 := make(map[string]*DataMsg)
+			map1 := make(map[string]interface{})
 			err := json.Unmarshal([]byte(tempMsg_json), &map1)
 			if err != nil {
 				fmt.Println("error", err)
@@ -141,7 +141,7 @@ func main() {
 					Appid:    c.DefaultPostForm("appid", ""),
 					Pagepath: c.DefaultPostForm("pagepath", ""),
 				},
-				Data: map1,
+				// Data: map1,
 			}
 		} else {
 			msg = 0
