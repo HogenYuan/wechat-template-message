@@ -84,7 +84,6 @@ func main() {
 		// post_url := "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
 
 		mess_type := c.PostForm("mess_type")
-		content := c.PostForm("content")
 
 		post := c.PostForm("post")
 		fmt.Println("读取content\n", content)
@@ -162,12 +161,12 @@ func main() {
 		c.String(200, "PID:  %d", os.Getpid())
 		ioutil.WriteFile("./pid", os.Getpid(), 0666);
 	})
+
 	//停止任务
 	r.GET("/stop", func(c *gin.Context) {
 		c.String(200, "STOP success")
 		manners.Close()
 	})
-
 
 	manners.ListenAndServe(":7767", r)
 }
