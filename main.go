@@ -161,6 +161,7 @@ func main() {
 	r.GET("/pid", func(c *gin.Context) {
 		c.String(200, "PID:  %d", os.Getpid())
 	})
+
 	//停止任务
 	r.GET("/stop", func(c *gin.Context) {
 		c.String(200, "STOP success")
