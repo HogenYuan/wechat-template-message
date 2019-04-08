@@ -91,7 +91,7 @@ func main() {
 		// 	msgtype: "text",
 		// 	text:    TextMsg{content: c.DefaultPostForm("content", "")},
 		// }
-		msg := &Message{
+		msg := Message{
 			touser:  openid,
 			msgtype: "text",
 			text:    TextMsg{content: "fff"},
