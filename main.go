@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/braintree/manners"
 	"github.com/gin-gonic/gin"
-	"github.com/goinggo/mapstructure"
+	// "github.com/goinggo/mapstructure"
 	"io/ioutil"
 	"net/http"
 	// "net/url"
@@ -123,7 +123,7 @@ func main() {
 		} else if mess_type == "0" {
 			msg = 0
 			tempMsg_json := c.PostForm("example")
-			map1 := make(map[string]*KeyWordData)
+			map1 := make(map[string]KeyWordData)
 			err := json.Unmarshal([]byte(tempMsg_json), &map1)
 			if err != nil {
 				fmt.Println("error", err)
@@ -133,10 +133,10 @@ func main() {
 			for k, v := range map1 {
 				fmt.Printf("k值:%s,v值:%s\n", k, v)
 				var keyword KeyWordData
-				err := mapstructure.Decode(v, &keyword) //map转struct
-				if err != nil {
-					fmt.Println(err)
-				}
+				// err := mapstructure.Decode(v, &keyword) //map转struct
+				// if err != nil {
+				// 	fmt.Println(err)
+				// }
 				fmt.Printf("keyword值%+v\n", keyword)
 			}
 			//模板消息
@@ -149,7 +149,7 @@ func main() {
 					Appid:    c.DefaultPostForm("appid", ""),
 					Pagepath: c.DefaultPostForm("pagepath", ""),
 				},
-				// Data: dataMsg
+				// Data: map1,
 			}
 		} else {
 			msg = 0
