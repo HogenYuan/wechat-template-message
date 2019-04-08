@@ -83,7 +83,6 @@ func main() {
 
 		mess_type := c.PostForm("mess_type")
 		content := c.PostForm("content")
-
 		post := c.PostForm("post")
 		fmt.Println("读取content\n", content)
 		fmt.Printf("读取post%+v\n", post)
