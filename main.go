@@ -26,13 +26,7 @@ type PicMessage struct {
 	News    NewsMsg `json:"news"`
 }
 type NewsMsg struct {
-	Articles ArticlesMsg `json:"articles"`
-}
-type ArticlesMsg struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Url         string `json:"url"`
-	Picurl      string `json:"picurl"`
+	Articles map[string]string `json:"articles"`
 }
 type TemplateMsg struct {
 	Touser      string                   `json:"touser"`      //接收者的OpenID
@@ -109,11 +103,11 @@ func main() {
 				Touser:  openid,
 				Msgtype: "news",
 				News: NewsMsg{
-					Articles: ArticlesMsg{
-						Title:       c.DefaultPostForm("title", ""),
-						Description: c.DefaultPostForm("description", ""),
-						Url:         c.DefaultPostForm("url", ""),
-						Picurl:      c.DefaultPostForm("picurl", ""),
+					Articles: map[string]string{
+						"title":       c.DefaultPostForm("title", ""),
+						"description": c.DefaultPostForm("description", ""),
+						"url":         c.DefaultPostForm("url", ""),
+						"picurl":      c.DefaultPostForm("picurl", ""),
 					},
 				},
 			}
