@@ -172,10 +172,8 @@ func main() {
 	})
 
 	pid := fmt.Sprint(os.Getpid())
-	piderr := ioutil.WriteFile("./pid",  []byte(pid) , 0666);
+	ioutil.WriteFile("./pid", []byte(pid), 0666)
 
 	manners.ListenAndServe(":7767", r)
 
-
 }
-
