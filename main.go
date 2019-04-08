@@ -92,7 +92,7 @@ func main() {
 		// 	text:    TextMsg{content: c.DefaultPostForm("content", "")},
 		// }
 		msg := &Message{
-			touser:  "" + openid + "",
+			touser:  "'" + openid + "'",
 			msgtype: "text",
 			text:    TextMsg{content: "fff"},
 		}
