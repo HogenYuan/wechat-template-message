@@ -79,7 +79,7 @@ func main() {
 		post_url := ""
 
 		fmt.Println("start_time:", time.Now().Unix())
-		for openid := range openid_100 {
+		for _, openid := range openid_100 {
 			fmt.Printf("openid_100:%s\n", openid)
 			content := c.DefaultPostForm("content", "")
 			if mess_type == "1" {
