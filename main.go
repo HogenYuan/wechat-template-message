@@ -9,6 +9,7 @@ import (
 	// "github.com/goinggo/mapstructure"
 	"io/ioutil"
 	"net/http"
+	"time"
 	// "net/url"
 	"os"
 )
@@ -56,12 +57,12 @@ func main() {
 	r := gin.Default()
 
 	r.POST("/getMessage/", func(c *gin.Context) {
-		if c.Request.Form == nil {
-			c.Request.ParseMultipartForm(32 << 20)
-		}
-		for k, v := range c.Request.Form {
-			fmt.Println(k, v)
-		}
+		// if c.Request.Form == nil {
+		// 	c.Request.ParseMultipartForm(32 << 20)
+		// }
+		// for k, v := range c.Request.Form {
+		// 	fmt.Println(k, v)
+		// }
 		ac_token := c.PostForm("ac_token")
 		mess_type := c.PostForm("mess_type")
 
@@ -77,8 +78,9 @@ func main() {
 		var suc = 0
 		post_url := ""
 
-		for nickname, openid := range openid_100 {
-			fmt.Printf("openid_100:%s:%s\n", nickname, openid)
+		fmt.Println("start_time:", time.Now().Unix())
+		for openid := range openid_100 {
+			// fmt.Printf("openid_100:%s:%s\n", nickname, openid)
 			content := c.DefaultPostForm("content", "")
 			if mess_type == "1" {
 				//文字消息
@@ -116,7 +118,7 @@ func main() {
 				if err != nil {
 					fmt.Println("error", err)
 				}
-				fmt.Printf("dataMsg:%+v\n", dataMsg)
+				// fmt.Printf("dataMsg:%+v\n", dataMsg)
 				//模板消息
 				post_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + ac_token
 				msg = &TemplateMsg{
@@ -130,7 +132,7 @@ func main() {
 					Data: dataMsg,
 				}
 			}
-			fmt.Printf("msg:%+v\n", msg)
+			// fmt.Printf("msg:%+v\n", msg)
 
 			body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
 			if err != nil {
@@ -138,7 +140,7 @@ func main() {
 				// c.String(200, "json转换错误:%s,%v", openid, err)
 				return
 			} else {
-				fmt.Printf("转换str%s\n", string(body))
+				// fmt.Printf("转换str%s\n", string(body))
 			}
 			//发送请求
 			req, err := http.NewRequest("POST", post_url, bytes.NewReader(body))
@@ -161,6 +163,7 @@ func main() {
 			}
 			defer res.Body.Close()
 		}
+		fmt.Println("end_time:", time.Now().Unix())
 		c.JSON(200, gin.H{
 			"total": total,
 			"suc":   suc,
