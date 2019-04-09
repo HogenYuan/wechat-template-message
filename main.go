@@ -67,9 +67,15 @@ func main() {
 		mess_type := c.PostForm("mess_type")
 
 		openid_100_json := c.PostForm("openid_100")
-		// openid_100 :=
-		for k, v := range openid_100_json {
-			fmt.Println(k, v)
+		var openid_100 map[string]interface{}
+		err := json.Unmarshal([]byte(openid_100_json), &openid_100)
+		if err != nil {
+			fmt.Println("openid_100 err: ", err)
+			return
+		}
+
+		for k, v := range openid_100 {
+			fmt.Printf("openid_100:%s:%s\n", k, v)
 		}
 
 		var msg interface{}
