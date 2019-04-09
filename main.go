@@ -69,9 +69,9 @@ func main() {
 		if c.Request.Form == nil {
 			c.Request.ParseMultipartForm(32 << 20)
 		}
-		for k, v := range c.Request.Form {
-			fmt.Println(k, v)
-		}
+		// for k, v := range c.Request.Form {
+		// 	fmt.Println(k, v)
+		// }
 		ac_token := c.PostForm("ac_token")
 		openid := c.PostForm("openid")
 		// log := make(map[string]interface{})
@@ -123,7 +123,7 @@ func main() {
 		} else if mess_type == "0" {
 			msg = 0
 			tempMsg_json := c.PostForm("example")
-			map1 := make(map[string]KeyWordData)
+			map1 := []KeyWordData{}
 			err := json.Unmarshal([]byte(tempMsg_json), &map1)
 			if err != nil {
 				fmt.Println("error", err)
