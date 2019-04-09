@@ -80,7 +80,7 @@ func main() {
 
 		fmt.Println("start_time:", time.Now().Unix())
 		for openid := range openid_100 {
-			// fmt.Printf("openid_100:%s:%s\n", nickname, openid)
+			fmt.Printf("openid_100:%s\n", openid)
 			content := c.DefaultPostForm("content", "")
 			if mess_type == "1" {
 				//文字消息
