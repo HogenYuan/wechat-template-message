@@ -65,6 +65,13 @@ func main() {
 		ac_token := c.PostForm("ac_token")
 		openid := c.PostForm("openid")
 		mess_type := c.PostForm("mess_type")
+
+		openid_100_json := c.PostForm("openid_100")
+		// openid_100 :=
+		for k, v := range openid_100_json {
+			fmt.Println(k, v)
+		}
+
 		var msg interface{}
 		post_url := ""
 		if mess_type == "1" {
