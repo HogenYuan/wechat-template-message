@@ -65,7 +65,6 @@ func main() {
 	r := gin.Default()
 
 	r.POST("/getMessage/", func(c *gin.Context) {
-		// log_id := c.Param("log_id")
 		if c.Request.Form == nil {
 			c.Request.ParseMultipartForm(32 << 20)
 		}
@@ -74,25 +73,7 @@ func main() {
 		// }
 		ac_token := c.PostForm("ac_token")
 		openid := c.PostForm("openid")
-		// log := make(map[string]interface{})
-		// err := json.Unmarshal([]byte(logJson), &log)
-		// fmt.Printf("读取转换数据 %v \n", log)
-		// if err != nil {
-		// fmt.Println("Can't decode json message", err)
-		// }
-		// fmt.Println("获取tempid", log["temp"].(map[string]interface{})["example"].([]interface{})[3].(map[string]interface{})["keyword"])
-		// fmt.Printf("看一哈 %s \n", log["uniacid"])
-
-		// post_url := "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
-
 		mess_type := c.PostForm("mess_type")
-		//格式转换
-		// post_url := "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
-		// msg := &PicMessage{
-		// 	Touser:  openid,
-		// 	Msgtype: "news",
-		// 	Text:    TextMsg{Content: c.DefaultPostForm("content", "")},
-		// }
 		var msg interface{}
 		post_url := ""
 		if mess_type == "1" {
@@ -123,22 +104,25 @@ func main() {
 		} else if mess_type == "0" {
 			msg = 0
 			tempMsg_json := c.PostForm("example")
-			map1 := make(map[string]KeyWordData)
+			map1 := make(map[string]*KeyWordData)
 			err := json.Unmarshal([]byte(tempMsg_json), &map1)
 			if err != nil {
 				fmt.Println("error", err)
 			}
 			fmt.Printf("dataMsg:%+v\n", map1)
 			// var dataMsg map[string]*KeyWordData
-			for k, v := range map1 {
-				fmt.Printf("k值:%s,v值:%s\n", k, v)
-				var keyword KeyWordData
-				// err := mapstructure.Decode(v, &keyword) //map转struct
-				// if err != nil {
-				// 	fmt.Println(err)
-				// }
-				fmt.Printf("keyword值%+v\n", keyword)
-			}
+			// for k, v := range map1 {
+			// 	fmt.Printf("k值:%s,v值:%s\n", k, v)
+			// 	// keyword := KeyWordData{v["Value"], v["Color"]}
+			// 	keyword := KeyWordData{}
+			// 	fmt.Printf("vvvv值%s\n", v["value"])
+
+			// 	// err := mapstructure.Decode(v, &keyword) //map转struct
+			// 	// if err != nil {
+			// 	// 	fmt.Println(err)
+			// 	// }
+			// 	fmt.Printf("keyword值%+v\n", keyword)
+			// }
 			//模板消息
 			post_url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
 			msg = &TemplateMsg{
@@ -149,7 +133,7 @@ func main() {
 					Appid:    c.DefaultPostForm("appid", ""),
 					Pagepath: c.DefaultPostForm("pagepath", ""),
 				},
-				// Data: map1,
+				Data: map1,
 			}
 		} else {
 			msg = 0
