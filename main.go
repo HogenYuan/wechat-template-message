@@ -124,7 +124,7 @@ func main() {
 			// 	fmt.Printf("keyword值%+v\n", keyword)
 			// }
 			//模板消息
-			post_url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
+			post_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + ac_token
 			msg = &TemplateMsg{
 				Touser:      openid,
 				Template_id: c.DefaultPostForm("template_id", ""),
@@ -144,7 +144,6 @@ func main() {
 		if err != nil {
 			fmt.Println("json转换错误", err)
 		} else {
-			fmt.Printf("转换%+v\n", body)
 			fmt.Printf("转换str%s\n", string(body))
 		}
 		//发送请求
