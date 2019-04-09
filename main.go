@@ -82,89 +82,89 @@ func main() {
 		//协程分发
 		// wg := sync.WaitGroup{}
 		for _, openid := range openid_100 {
-			go func() {
-				content := c.DefaultPostForm("content", "")
-				if mess_type == "1" {
-					//文字消息
-					post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
-					msg = &Message{
-						Touser:  openid,
-						Msgtype: "text",
-						Text:    TextMsg{Content: content},
-					}
-				} else if mess_type == "2" {
-					//图文消息
-					title := c.DefaultPostForm("title", "")
-					description := c.DefaultPostForm("description", "")
-					url := c.DefaultPostForm("url", "")
-					picurl := c.DefaultPostForm("picurl", "")
-					post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
-					var msgs [1]ArticlesMsg
-					msgs[0] = ArticlesMsg{
-						Title:       title,
-						Description: description,
-						Url:         url,
-						Picurl:      picurl,
-					}
-					msg = &PicMessage{
-						Touser:  openid,
-						Msgtype: "news",
-						News: NewsMsg{
-							Articles: msgs,
-						},
-					}
-				} else if mess_type == "0" {
-					tempMsg_json := c.PostForm("example")
-					dataMsg := make(map[string]*KeyWordData)
-					err := json.Unmarshal([]byte(tempMsg_json), &dataMsg)
-					if err != nil {
-						fmt.Println("error", err)
-					}
-					// fmt.Printf("dataMsg:%+v\n", dataMsg)
-					//模板消息
-					post_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + ac_token
-					msg = &TemplateMsg{
-						Touser:      openid,
-						Template_id: c.DefaultPostForm("template_id", ""),
-						Url:         c.DefaultPostForm("url", ""),
-						Miniprogram: MiniprogramMsg{
-							Appid:    c.DefaultPostForm("appid", ""),
-							Pagepath: c.DefaultPostForm("pagepath", ""),
-						},
-						Data: dataMsg,
-					}
+			// go func() {
+			content := c.DefaultPostForm("content", "")
+			if mess_type == "1" {
+				//文字消息
+				post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
+				msg = &Message{
+					Touser:  openid,
+					Msgtype: "text",
+					Text:    TextMsg{Content: content},
 				}
-				// fmt.Printf("msg:%+v\n", msg)
+			} else if mess_type == "2" {
+				//图文消息
+				title := c.DefaultPostForm("title", "")
+				description := c.DefaultPostForm("description", "")
+				url := c.DefaultPostForm("url", "")
+				picurl := c.DefaultPostForm("picurl", "")
+				post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
+				var msgs [1]ArticlesMsg
+				msgs[0] = ArticlesMsg{
+					Title:       title,
+					Description: description,
+					Url:         url,
+					Picurl:      picurl,
+				}
+				msg = &PicMessage{
+					Touser:  openid,
+					Msgtype: "news",
+					News: NewsMsg{
+						Articles: msgs,
+					},
+				}
+			} else if mess_type == "0" {
+				tempMsg_json := c.PostForm("example")
+				dataMsg := make(map[string]*KeyWordData)
+				err := json.Unmarshal([]byte(tempMsg_json), &dataMsg)
+				if err != nil {
+					fmt.Println("error", err)
+				}
+				// fmt.Printf("dataMsg:%+v\n", dataMsg)
+				//模板消息
+				post_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + ac_token
+				msg = &TemplateMsg{
+					Touser:      openid,
+					Template_id: c.DefaultPostForm("template_id", ""),
+					Url:         c.DefaultPostForm("url", ""),
+					Miniprogram: MiniprogramMsg{
+						Appid:    c.DefaultPostForm("appid", ""),
+						Pagepath: c.DefaultPostForm("pagepath", ""),
+					},
+					Data: dataMsg,
+				}
+			}
+			// fmt.Printf("msg:%+v\n", msg)
 
-				body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
-				if err != nil {
-					fmt.Println("json转换错误", err)
-					// c.String(200, "json转换错误:%s,%v", openid, err)
-					return
-				} else {
-					// fmt.Printf("转换str%s\n", string(body))
-				}
-				//发送请求
-				req, err := http.NewRequest("POST", post_url, bytes.NewReader(body))
-				req.Header.Set("Content-Type", "application/json;encoding=utf-8")
-				client := &http.Client{}
-				res, err := client.Do(req)
-				//解析数据
-				if err != nil {
-					fmt.Printf("请求失败%v\n", err)
-					// c.String(200, "请求失败:%s,%v", openid, err)
-				} else {
-					// _, err := ioutil.ReadAll(res.Body)
-					// if err != nil {
-					// fmt.Printf("错误:读取body%v\n", err)
-					// c.String(200, "%s,%v", openid, err)
-					// } else {
-					suc++
-					// fmt.Printf("解析结果%v\n", string(bts))
-					// }
-				}
-				defer res.Body.Close()
-			}()
+			body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
+			if err != nil {
+				fmt.Println("json转换错误", err)
+				// c.String(200, "json转换错误:%s,%v", openid, err)
+				return
+			} else {
+				// fmt.Printf("转换str%s\n", string(body))
+			}
+			//发送请求
+			req, err := http.NewRequest("POST", post_url, bytes.NewReader(body))
+			req.Header.Set("Content-Type", "application/json;encoding=utf-8")
+			client := &http.Client{}
+			res, err := client.Do(req)
+			//解析数据
+			if err != nil {
+				fmt.Printf("请求失败%v\n", err)
+				// c.String(200, "请求失败:%s,%v", openid, err)
+			} else {
+				// _, err := ioutil.ReadAll(res.Body)
+				// if err != nil {
+				// fmt.Printf("错误:读取body%v\n", err)
+				// c.String(200, "%s,%v", openid, err)
+				// } else {
+				suc++
+				// fmt.Printf("解析结果%v\n", string(bts))
+				// }
+			}
+			defer res.Body.Close()
+			// }()
 		}
 		core := c.DefaultPostForm("core", "0")
 		fmt.Printf("线程:%s的start_time:%d\n", core, start_time)
