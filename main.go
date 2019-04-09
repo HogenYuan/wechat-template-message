@@ -123,22 +123,22 @@ func main() {
 		} else if mess_type == "0" {
 			msg = 0
 			tempMsg_json := c.PostForm("example")
-			map1 := [...][2]string{}
+			var map1 interface{}
 			err := json.Unmarshal([]byte(tempMsg_json), &map1)
 			if err != nil {
 				fmt.Println("error", err)
 			}
 			fmt.Printf("dataMsg:%+v\n", map1)
 			// var dataMsg map[string]*KeyWordData
-			for k, v := range map1 {
-				fmt.Printf("k值:%s,v值:%s\n", k, v)
-				var keyword KeyWordData
-				// err := mapstructure.Decode(v, &keyword) //map转struct
-				// if err != nil {
-				// 	fmt.Println(err)
-				// }
-				fmt.Printf("keyword值%+v\n", keyword)
-			}
+			// for k, v := range map1 {
+			// 	fmt.Printf("k值:%s,v值:%s\n", k, v)
+			// 	var keyword KeyWordData
+			// 	// err := mapstructure.Decode(v, &keyword) //map转struct
+			// 	// if err != nil {
+			// 	// 	fmt.Println(err)
+			// 	// }
+			// 	fmt.Printf("keyword值%+v\n", keyword)
+			// }
 			//模板消息
 			post_url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + ac_token
 			msg = &TemplateMsg{
