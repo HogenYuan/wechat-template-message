@@ -167,7 +167,7 @@ func main() {
 			}()
 		}
 		core := c.DefaultPostForm("core", "0")
-		fmt.Printf("线程:%s的开始时间:%d,结束时间:%d,发送人数为:%s个\n", core, start_time, time.Now().Unix(), suc)
+		fmt.Printf("线程:%s的开始时间:%d,结束时间:%d,发送人数为:%d个\n", core, start_time, time.Now().Unix(), suc)
 		c.JSON(200, gin.H{
 			"total": total,
 			"suc":   suc,
