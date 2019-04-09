@@ -156,10 +156,6 @@ func main() {
 					// c.String(200, "%s,%v", openid, err)
 				} else {
 					suc++
-					c.JSON(200, gin.H{
-						"total": total,
-						"suc":   suc,
-					})
 					fmt.Printf("解析结果%v\n", string(bts))
 				}
 			}
