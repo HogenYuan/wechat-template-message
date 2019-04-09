@@ -38,7 +38,7 @@ type ArticlesMsg struct {
 type TemplateMsg struct {
 	Touser      string                  `json:"touser"`                //接收者的OpenID
 	Template_id string                  `json:"template_id"`           //模板消息ID
-	Url         string                  `json:"url"`                   //点击后跳转链接
+	Url         string                  `json:"url,omitempty"`         //点击后跳转链接
 	Miniprogram MiniprogramMsg          `json:"miniprogram,omitempty"` //点击跳转小程序
 	Data        map[string]*KeyWordData `json:"data"`
 }
@@ -68,9 +68,9 @@ func main() {
 		if c.Request.Form == nil {
 			c.Request.ParseMultipartForm(32 << 20)
 		}
-		// for k, v := range c.Request.Form {
-		// 	fmt.Println(k, v)
-		// }
+		for k, v := range c.Request.Form {
+			fmt.Println(k, v)
+		}
 		ac_token := c.PostForm("ac_token")
 		openid := c.PostForm("openid")
 		mess_type := c.PostForm("mess_type")
