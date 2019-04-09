@@ -80,7 +80,6 @@ func main() {
 
 		fmt.Println("start_time:", time.Now().Unix())
 		for _, openid := range openid_100 {
-			fmt.Printf("openid_100:%s\n", openid)
 			content := c.DefaultPostForm("content", "")
 			if mess_type == "1" {
 				//文字消息
@@ -152,13 +151,13 @@ func main() {
 				fmt.Printf("请求失败%v\n", err)
 				// c.String(200, "请求失败:%s,%v", openid, err)
 			} else {
-				bts, err := ioutil.ReadAll(res.Body)
+				_, err := ioutil.ReadAll(res.Body)
 				if err != nil {
 					fmt.Printf("错误:读取body%v\n", err)
 					// c.String(200, "%s,%v", openid, err)
 				} else {
 					suc++
-					fmt.Printf("解析结果%v\n", string(bts))
+					// fmt.Printf("解析结果%v\n", string(bts))
 				}
 			}
 			defer res.Body.Close()
