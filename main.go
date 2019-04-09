@@ -154,14 +154,14 @@ func main() {
 					fmt.Printf("请求失败%v\n", err)
 					// c.String(200, "请求失败:%s,%v", openid, err)
 				} else {
-					_, err := ioutil.ReadAll(res.Body)
-					if err != nil {
-						fmt.Printf("错误:读取body%v\n", err)
-						// c.String(200, "%s,%v", openid, err)
-					} else {
-						suc++
-						// fmt.Printf("解析结果%v\n", string(bts))
-					}
+					// _, err := ioutil.ReadAll(res.Body)
+					// if err != nil {
+					// fmt.Printf("错误:读取body%v\n", err)
+					// c.String(200, "%s,%v", openid, err)
+					// } else {
+					suc++
+					// fmt.Printf("解析结果%v\n", string(bts))
+					// }
 				}
 				defer res.Body.Close()
 			}()
