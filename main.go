@@ -63,7 +63,6 @@ func main() {
 			fmt.Println(k, v)
 		}
 		ac_token := c.PostForm("ac_token")
-		openid := c.PostForm("openid")
 		mess_type := c.PostForm("mess_type")
 
 		openid_100_json := c.PostForm("openid_100")
@@ -74,27 +73,34 @@ func main() {
 			return
 		}
 		var msg interface{}
+		var total = len(openid_100)
+		var suc = 0
 		post_url := ""
 
-		for k, v := range openid_100 {
-			fmt.Printf("openid_100:%s:%s\n", k, v)
+		for nickname, openid := range openid_100 {
+			fmt.Printf("openid_100:%s:%s\n", nickname, openid)
+			content := c.DefaultPostForm("content", "")
 			if mess_type == "1" {
 				//文字消息
 				post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
 				msg = &Message{
 					Touser:  openid,
 					Msgtype: "text",
-					Text:    TextMsg{Content: c.DefaultPostForm("content", "")},
+					Text:    TextMsg{Content: content},
 				}
 			} else if mess_type == "2" {
 				//图文消息
+				title := c.DefaultPostForm("title", "")
+				description := c.DefaultPostForm("description", "")
+				url := c.DefaultPostForm("url", "")
+				picurl := c.DefaultPostForm("picurl", "")
 				post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
 				var msgs [1]ArticlesMsg
 				msgs[0] = ArticlesMsg{
-					Title:       c.DefaultPostForm("title", ""),
-					Description: c.DefaultPostForm("description", ""),
-					Url:         c.DefaultPostForm("url", ""),
-					Picurl:      c.DefaultPostForm("picurl", ""),
+					Title:       title,
+					Description: description,
+					Url:         url,
+					Picurl:      picurl,
 				}
 				msg = &PicMessage{
 					Touser:  openid,
@@ -114,7 +120,7 @@ func main() {
 				//模板消息
 				post_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + ac_token
 				msg = &TemplateMsg{
-					Touser:      v,
+					Touser:      openid,
 					Template_id: c.DefaultPostForm("template_id", ""),
 					Url:         c.DefaultPostForm("url", ""),
 					Miniprogram: MiniprogramMsg{
@@ -129,7 +135,7 @@ func main() {
 			body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
 			if err != nil {
 				fmt.Println("json转换错误", err)
-				c.String(200, "json转换错误:%s,%v", openid, err)
+				// c.String(200, "json转换错误:%s,%v", openid, err)
 				return
 			} else {
 				fmt.Printf("转换str%s\n", string(body))
@@ -142,18 +148,23 @@ func main() {
 			//解析数据
 			if err != nil {
 				fmt.Printf("请求失败%v\n", err)
-				c.String(200, "请求失败:%s,%v", openid, err)
+				// c.String(200, "请求失败:%s,%v", openid, err)
 			} else {
 				bts, err := ioutil.ReadAll(res.Body)
 				if err != nil {
 					fmt.Printf("错误:读取body%v\n", err)
-					c.String(200, "%s,%v", openid, err)
+					// c.String(200, "%s,%v", openid, err)
 				} else {
+					suc++
 					fmt.Printf("解析结果%v\n", string(bts))
 				}
 			}
 			defer res.Body.Close()
 		}
+		c.JSON(200, gin.H{
+			"total": total,
+			"suc":   suc,
+		})
 	})
 
 	//获取pid
