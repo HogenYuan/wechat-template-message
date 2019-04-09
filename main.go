@@ -43,17 +43,8 @@ type TemplateMsg struct {
 	Data        map[string]*KeyWordData `json:"data"`
 }
 type MiniprogramMsg struct {
-	Appid    string `json:"appid"`
-	Pagepath string `json:"pagepath"`
-}
-
-type DataMsg struct {
-	First    KeyWordData `json:"first,omitempty"`
-	Keyword1 KeyWordData `json:"keyword1,omitempty"`
-	Keyword2 KeyWordData `json:"keyword2,omitempty"`
-	Keyword3 KeyWordData `json:"keyword3,omitempty"`
-	Keyword4 KeyWordData `json:"keyword4,omitempty"`
-	Keyword5 KeyWordData `json:"keyword5,omitempty"`
+	Appid    string `json:"appid,omitempty"`
+	Pagepath string `json:"pagepath,omitempty"`
 }
 
 type KeyWordData struct {
@@ -102,27 +93,13 @@ func main() {
 				},
 			}
 		} else if mess_type == "0" {
-			msg = 0
 			tempMsg_json := c.PostForm("example")
-			map1 := make(map[string]*KeyWordData)
-			err := json.Unmarshal([]byte(tempMsg_json), &map1)
+			dataMsg := make(map[string]*KeyWordData)
+			err := json.Unmarshal([]byte(tempMsg_json), &dataMsg)
 			if err != nil {
 				fmt.Println("error", err)
 			}
-			fmt.Printf("dataMsg:%+v\n", map1)
-			// var dataMsg map[string]*KeyWordData
-			// for k, v := range map1 {
-			// 	fmt.Printf("k值:%s,v值:%s\n", k, v)
-			// 	// keyword := KeyWordData{v["Value"], v["Color"]}
-			// 	keyword := KeyWordData{}
-			// 	fmt.Printf("vvvv值%s\n", v["value"])
-
-			// 	// err := mapstructure.Decode(v, &keyword) //map转struct
-			// 	// if err != nil {
-			// 	// 	fmt.Println(err)
-			// 	// }
-			// 	fmt.Printf("keyword值%+v\n", keyword)
-			// }
+			fmt.Printf("dataMsg:%+v\n", dataMsg)
 			//模板消息
 			post_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + ac_token
 			msg = &TemplateMsg{
@@ -133,18 +110,14 @@ func main() {
 					Appid:    c.DefaultPostForm("appid", ""),
 					Pagepath: c.DefaultPostForm("pagepath", ""),
 				},
-				Data: map1,
+				Data: dataMsg,
 			}
-		} else {
-			msg = 0
 		}
 		fmt.Printf("msg:%+v\n", msg)
 
 		body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
 		if err != nil {
 			fmt.Println("json转换错误", err)
-		} else {
-			fmt.Printf("转换str%s\n", string(body))
 		}
 		//发送请求
 		req, err := http.NewRequest("POST", post_url, bytes.NewReader(body))
@@ -159,7 +132,7 @@ func main() {
 			bts, err := ioutil.ReadAll(res.Body)
 			if err != nil {
 				fmt.Printf("错误:读取body%v\n", err)
-				return
+				c.String(200, "%s,%v", openid, err)
 			} else {
 				fmt.Printf("解析结果%v\n", string(bts))
 			}
