@@ -77,8 +77,7 @@ func main() {
 		var total = len(openid_100)
 		var suc = 0
 		post_url := ""
-
-		fmt.Println("start_time:", time.Now().Unix())
+		var start_time = time.Now().Unix()
 		for _, openid := range openid_100 {
 			content := c.DefaultPostForm("content", "")
 			if mess_type == "1" {
@@ -162,7 +161,9 @@ func main() {
 			}
 			defer res.Body.Close()
 		}
-		fmt.Println("end_time:", time.Now().Unix())
+		core := c.DefaultPostForm("core", "0")
+		fmt.Printf("线程:%s的start_time:%d\n", core, start_time)
+		fmt.Printf("线程:%s的end_time:%d\n", core, time.Now().Unix())
 		c.JSON(200, gin.H{
 			"total": total,
 			"suc":   suc,
