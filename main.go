@@ -118,6 +118,10 @@ func main() {
 		body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
 		if err != nil {
 			fmt.Println("json转换错误", err)
+			c.String(200, "json转换错误:%s,%v", openid, err)
+			return
+		} else {
+			fmt.Printf("body:%v", body)
 		}
 		//发送请求
 		req, err := http.NewRequest("POST", post_url, bytes.NewReader(body))
@@ -127,7 +131,7 @@ func main() {
 		//解析数据
 		if err != nil {
 			fmt.Printf("请求失败%v\n", err)
-			return
+			c.String(200, "请求失败:%s,%v", openid, err)
 		} else {
 			bts, err := ioutil.ReadAll(res.Body)
 			if err != nil {
