@@ -67,7 +67,7 @@ func main() {
 		mess_type := c.PostForm("mess_type")
 
 		openid_100_json := c.PostForm("openid_100")
-		var openid_100 map[string]interface{}
+		var openid_100 map[string]string
 		err := json.Unmarshal([]byte(openid_100_json), &openid_100)
 		if err != nil {
 			fmt.Println("openid_100 err: ", err)
