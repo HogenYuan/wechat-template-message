@@ -9,6 +9,7 @@ import (
 	// "github.com/goinggo/mapstructure"
 	"io/ioutil"
 	"net/http"
+	"sync"
 	"time"
 	// "net/url"
 	"os"
@@ -78,6 +79,8 @@ func main() {
 		var suc = 0
 		post_url := ""
 		var start_time = time.Now().Unix()
+		//协程分发
+		wg := sync.WaitGroup{}
 		for _, openid := range openid_100 {
 			content := c.DefaultPostForm("content", "")
 			if mess_type == "1" {
