@@ -156,6 +156,7 @@ func main() {
 					// c.String(200, "%s,%v", openid, err)
 				} else {
 					suc++
+					c.String(200, string(suc))
 					fmt.Printf("解析结果%v\n", string(bts))
 				}
 			}
