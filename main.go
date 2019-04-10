@@ -81,7 +81,7 @@ func main() {
 		var start_time = time.Now().Unix()
 		//协程分发
 		wg := sync.WaitGroup{}
-		for _, openid := range openid_100 {
+		for openid, _ := range openid_100 {
 			wg.Add(1)
 			go func(openid string) {
 				content := c.DefaultPostForm("content", "")
