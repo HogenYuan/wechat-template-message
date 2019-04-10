@@ -82,7 +82,7 @@ func main() {
 		//协程分发
 		// wg := sync.WaitGroup{}
 		for _, openid := range openid_100 {
-			go func() {
+			go func(openid_100) {
 				content := c.DefaultPostForm("content", "")
 				if mess_type == "1" {
 					//文字消息
