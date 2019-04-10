@@ -82,7 +82,7 @@ func main() {
 		//协程分发
 		// wg := sync.WaitGroup{}
 		for _, openid := range openid_100 {
-			go func(openid) {
+			go func(openid string) {
 				content := c.DefaultPostForm("content", "")
 				if mess_type == "1" {
 					//文字消息
@@ -164,7 +164,7 @@ func main() {
 					// }
 				}
 				defer res.Body.Close()
-			}()
+			}(openid)
 		}
 		core := c.DefaultPostForm("core", "0")
 		fmt.Printf("线程:%s的开始时间:%d,结束时间:%d,发送人数为:%d个\n", core, start_time, time.Now().Unix(), suc)
