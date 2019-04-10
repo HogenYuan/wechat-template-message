@@ -9,7 +9,7 @@ import (
 	// "github.com/goinggo/mapstructure"
 	"io/ioutil"
 	"net/http"
-	// "sync"
+	"sync"
 	"time"
 	// "net/url"
 	"os"
@@ -80,8 +80,9 @@ func main() {
 		post_url := ""
 		var start_time = time.Now().Unix()
 		//协程分发
-		// wg := sync.WaitGroup{}
+		wg := sync.WaitGroup{}
 		for _, openid := range openid_100 {
+			wg.Add(1)
 			go func(openid string) {
 				content := c.DefaultPostForm("content", "")
 				if mess_type == "1" {
@@ -163,9 +164,11 @@ func main() {
 					// fmt.Printf("解析结果%v\n", string(bts))
 					// }
 				}
+				wg.Done()
 				defer res.Body.Close()
 			}(openid)
 		}
+		wg.Wait()
 		core := c.DefaultPostForm("core", "0")
 		fmt.Printf("线程:%s的开始时间:%d,结束时间:%d,发送人数为:%d个\n", core, start_time, time.Now().Unix(), suc)
 		c.JSON(200, gin.H{
