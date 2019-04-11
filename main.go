@@ -87,7 +87,7 @@ func main() {
 		// if max_process != "0" {
 		// 	process, _ := strconv.Atoi(max_process)
 		// }
-		// runtime.GOMAXPROCS(4)
+		runtime.GOMAXPROCS(7)
 
 		for openid, _ := range openid_100 {
 			wg.Add(1)
