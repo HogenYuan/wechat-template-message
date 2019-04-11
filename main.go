@@ -9,7 +9,7 @@ import (
 	// "github.com/goinggo/mapstructure"
 	"io/ioutil"
 	"net/http"
-	// "runtime"
+	"runtime"
 	// "strconv"
 	"sync"
 	"time"
@@ -87,7 +87,7 @@ func main() {
 		// if max_process != "0" {
 		// 	process, _ := strconv.Atoi(max_process)
 		// }
-		// runtime.GOMAXPROCS(4)
+		runtime.GOMAXPROCS(4)
 
 		for openid, _ := range openid_100 {
 			wg.Add(1)
