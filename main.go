@@ -10,7 +10,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"runtime"
-	"strconv"
+	// "strconv"
 	"sync"
 	"time"
 	// "net/url"
@@ -83,11 +83,12 @@ func main() {
 		var start_time = time.Now().Unix()
 		//协程分发
 		wg := sync.WaitGroup{}
-		max_process := c.DefaultPostForm("max_process", "0")
-		if max_process != "0" {
-			process, _ := strconv.Atoi(max_process)
-			runtime.GOMAXPROCS(process)
-		}
+		// max_process := c.DefaultPostForm("max_process", "0")
+		// if max_process != "0" {
+		// 	process, _ := strconv.Atoi(max_process)
+		// }
+		runtime.GOMAXPROCS(4)
+
 		for openid, _ := range openid_100 {
 			wg.Add(1)
 			go func(openid string) {
