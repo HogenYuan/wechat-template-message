@@ -9,6 +9,8 @@ import (
 	// "github.com/goinggo/mapstructure"
 	"io/ioutil"
 	"net/http"
+	"runtime"
+	"strconv"
 	"sync"
 	"time"
 	// "net/url"
@@ -81,6 +83,11 @@ func main() {
 		var start_time = time.Now().Unix()
 		//协程分发
 		wg := sync.WaitGroup{}
+		max_process := c.DefaultPostForm("max_process", "0")
+		if max_process != "0" {
+			process, _ := strconv.Atoi(max_process)
+			runtime.GOMAXPROCS(process)
+		}
 		for openid, _ := range openid_100 {
 			wg.Add(1)
 			go func(openid string) {
@@ -121,7 +128,6 @@ func main() {
 					if err != nil {
 						fmt.Println("error", err)
 					}
-					// fmt.Printf("dataMsg:%+v\n", dataMsg)
 					//模板消息
 					post_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + ac_token
 					msg = &TemplateMsg{
@@ -135,12 +141,10 @@ func main() {
 						Data: dataMsg,
 					}
 				}
-				// fmt.Printf("msg:%+v\n", msg)
 
 				body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
 				if err != nil {
 					fmt.Println("json转换错误", err)
-					// c.String(200, "json转换错误:%s,%v", openid, err)
 					return
 				} else {
 					// fmt.Printf("转换str%s\n", string(body))
@@ -153,12 +157,10 @@ func main() {
 				//解析数据
 				if err != nil {
 					fmt.Printf("请求失败%v\n", err)
-					// c.String(200, "请求失败:%s,%v", openid, err)
 				} else {
 					_, err := ioutil.ReadAll(res.Body)
 					if err != nil {
 						// fmt.Printf("错误:读取body%v\n", err)
-						// c.String(200, "%s,%v", openid, err)
 					} else {
 						suc++
 						// fmt.Printf("解析结果%v\n", string(bts))
