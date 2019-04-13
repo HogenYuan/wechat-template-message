@@ -166,8 +166,8 @@ func main() {
 						}
 					}
 					wg.Done()
-					if r := recover(); r != nil {
-						fmt.Println("don't worry, I can take care of myself")
+					if err := recover(); err != nil {
+						fmt.Println("don't worry, I can take care of myself.panic:", err)
 					}
 					defer res.Body.Close()
 				}()
