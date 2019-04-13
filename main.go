@@ -95,10 +95,16 @@ func main() {
 			go func(openid string) {
 				defer func() {
 					if err := recover(); err != nil {
-						wg.Done()
 						fmt.Println("don't worry, I can take care of myself.panic:", err)
+
+						defer func() {
+							if err := recover(); err != nil {
+								fmt.Println("don't worry, I can take care of myself.panic:", err)
+							}
+						}()
 					}
 				}()
+
 				content := c.DefaultPostForm("content", "")
 				if mess_type == "1" {
 					//文字消息
