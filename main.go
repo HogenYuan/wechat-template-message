@@ -96,14 +96,10 @@ func main() {
 				defer func() {
 
 					wg.Done()
+
 					if err := recover(); err != nil {
 						fmt.Println("don't worry, I can take care of myself.panic:", err)
-
-						defer func() {
-							if err := recover(); err != nil {
-								fmt.Println("don't worry, I can take care of myself.panic:", err)
-							}
-						}()
+						runtime.Goexit()
 					}
 				}()
 
