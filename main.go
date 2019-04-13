@@ -93,84 +93,84 @@ func main() {
 			wg.Add(1)
 			go func(openid string) {
 				defer func() {
-					content := c.DefaultPostForm("content", "")
-					if mess_type == "1" {
-						//文字消息
-						post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
-						msg = &Message{
-							Touser:  openid,
-							Msgtype: "text",
-							Text:    TextMsg{Content: content},
-						}
-					} else if mess_type == "2" {
-						//图文消息
-						title := c.DefaultPostForm("title", "")
-						description := c.DefaultPostForm("description", "")
-						url := c.DefaultPostForm("url", "")
-						picurl := c.DefaultPostForm("picurl", "")
-						post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
-						var msgs [1]ArticlesMsg
-						msgs[0] = ArticlesMsg{
-							Title:       title,
-							Description: description,
-							Url:         url,
-							Picurl:      picurl,
-						}
-						msg = &PicMessage{
-							Touser:  openid,
-							Msgtype: "news",
-							News: NewsMsg{
-								Articles: msgs,
-							},
-						}
-					} else if mess_type == "0" {
-						tempMsg_json := c.PostForm("example")
-						dataMsg := make(map[string]*KeyWordData)
-						err := json.Unmarshal([]byte(tempMsg_json), &dataMsg)
-						if err != nil {
-							fmt.Println("error", err)
-						}
-						//模板消息
-						post_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + ac_token
-						msg = &TemplateMsg{
-							Touser:      openid,
-							Template_id: c.DefaultPostForm("template_id", ""),
-							Url:         c.DefaultPostForm("url", ""),
-							Miniprogram: MiniprogramMsg{
-								Appid:    c.DefaultPostForm("appid", ""),
-								Pagepath: c.DefaultPostForm("pagepath", ""),
-							},
-							Data: dataMsg,
-						}
-					}
-
-					body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
-					if err != nil {
-						fmt.Println("json转换错误", err)
-						return
-					}
-
-					//发送请求
-					req, err := http.NewRequest("POST", post_url, bytes.NewReader(body))
-					req.Header.Set("Content-Type", "application/json;encoding=utf-8")
-					client := &http.Client{}
-					res, err := client.Do(req)
-					//解析数据
-					if err != nil {
-						fmt.Printf("请求失败%v\n", err)
-					} else {
-						_, err := ioutil.ReadAll(res.Body)
-						if err != nil {
-						} else {
-							suc++
-						}
-					}
-					wg.Done()
 					if err := recover(); err != nil {
 						fmt.Println("don't worry, I can take care of myself.panic:", err)
 					}
-					defer res.Body.Close()
 				}()
+				content := c.DefaultPostForm("content", "")
+				if mess_type == "1" {
+					//文字消息
+					post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
+					msg = &Message{
+						Touser:  openid,
+						Msgtype: "text",
+						Text:    TextMsg{Content: content},
+					}
+				} else if mess_type == "2" {
+					//图文消息
+					title := c.DefaultPostForm("title", "")
+					description := c.DefaultPostForm("description", "")
+					url := c.DefaultPostForm("url", "")
+					picurl := c.DefaultPostForm("picurl", "")
+					post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
+					var msgs [1]ArticlesMsg
+					msgs[0] = ArticlesMsg{
+						Title:       title,
+						Description: description,
+						Url:         url,
+						Picurl:      picurl,
+					}
+					msg = &PicMessage{
+						Touser:  openid,
+						Msgtype: "news",
+						News: NewsMsg{
+							Articles: msgs,
+						},
+					}
+				} else if mess_type == "0" {
+					tempMsg_json := c.PostForm("example")
+					dataMsg := make(map[string]*KeyWordData)
+					err := json.Unmarshal([]byte(tempMsg_json), &dataMsg)
+					if err != nil {
+						fmt.Println("error", err)
+					}
+					//模板消息
+					post_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + ac_token
+					msg = &TemplateMsg{
+						Touser:      openid,
+						Template_id: c.DefaultPostForm("template_id", ""),
+						Url:         c.DefaultPostForm("url", ""),
+						Miniprogram: MiniprogramMsg{
+							Appid:    c.DefaultPostForm("appid", ""),
+							Pagepath: c.DefaultPostForm("pagepath", ""),
+						},
+						Data: dataMsg,
+					}
+				}
+
+				body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
+				if err != nil {
+					fmt.Println("json转换错误", err)
+					return
+				}
+
+				//发送请求
+				req, err := http.NewRequest("POST", post_url, bytes.NewReader(body))
+				req.Header.Set("Content-Type", "application/json;encoding=utf-8")
+				client := &http.Client{}
+				res, err := client.Do(req)
+				//解析数据
+				if err != nil {
+					fmt.Printf("请求失败%v\n", err)
+				} else {
+					_, err := ioutil.ReadAll(res.Body)
+					if err != nil {
+					} else {
+						suc++
+					}
+				}
+				wg.Done()
+				defer res.Body.Close()
 			}(openid)
 		}
 		wg.Wait()
