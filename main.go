@@ -59,12 +59,6 @@ type KeyWordData struct {
 func main() {
 	r := gin.Default()
 
-	defer func() {
-		if err := recover(); err != nil {
-			fmt.Println("don't worry, I can take care of myself.panic:", err)
-		}
-	}()
-
 	r.POST("/getMessage/", func(c *gin.Context) {
 		// if c.Request.Form == nil {
 		// 	c.Request.ParseMultipartForm(32 << 20)
@@ -96,6 +90,11 @@ func main() {
 		// runtime.GOMAXPROCS(runtime.NumCPU() - 2)
 
 		for openid, _ := range openid_100 {
+			defer func() {
+				if err := recover(); err != nil {
+					fmt.Println("don't worry, I can take care of myself.panic:", err)
+				}
+			}()
 			wg.Add(1)
 			go func(openid string) {
 				content := c.DefaultPostForm("content", "")
