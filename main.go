@@ -90,13 +90,15 @@ func main() {
 		// runtime.GOMAXPROCS(runtime.NumCPU() - 2)
 
 		for openid, _ := range openid_100 {
-			defer func() {
-				if err := recover(); err != nil {
-					fmt.Println("don't worry, I can take care of myself.panic:", err)
-				}
-			}()
+
 			wg.Add(1)
 			go func(openid string) {
+				defer func() {
+					wg.Done()
+					if err := recover(); err != nil {
+						fmt.Println("don't worry, I can take care of myself.panic:", err)
+					}
+				}()
 				content := c.DefaultPostForm("content", "")
 				if mess_type == "1" {
 					//文字消息
@@ -169,8 +171,8 @@ func main() {
 						suc++
 					}
 				}
-				wg.Done()
-				defer res.Body.Close()
+
+				res.Body.Close()
 			}(openid)
 		}
 		wg.Wait()
