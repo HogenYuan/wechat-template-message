@@ -94,6 +94,8 @@ func main() {
 			wg.Add(1)
 			go func(openid string) {
 				defer func() {
+
+					wg.Done()
 					if err := recover(); err != nil {
 						fmt.Println("don't worry, I can take care of myself.panic:", err)
 
@@ -177,7 +179,7 @@ func main() {
 						suc++
 					}
 				}
-				wg.Done()
+
 				defer res.Body.Close()
 			}(openid)
 		}
