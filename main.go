@@ -63,6 +63,7 @@ func main() {
 		for k, v := range c.Request.Form {
 			fmt.Println(k, v)
 		}
+
 		ac_token := c.PostForm("ac_token")
 		mess_type := c.PostForm("mess_type")
 
