@@ -6,15 +6,12 @@ import (
 	"fmt"
 	"github.com/braintree/manners"
 	"github.com/gin-gonic/gin"
-	// "github.com/goinggo/mapstructure"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"runtime"
-	// "strconv"
 	"sync"
 	"time"
-	// "net/url"
-	"os"
 )
 
 type Message struct {
@@ -94,9 +91,7 @@ func main() {
 			wg.Add(1)
 			go func(openid string) {
 				defer func() {
-
 					wg.Done()
-
 					if err := recover(); err != nil {
 						fmt.Println("don't worry, I can take care of myself.panic:", err)
 						runtime.Goexit()
@@ -159,6 +154,7 @@ func main() {
 					fmt.Println("json转换错误", err)
 					return
 				}
+				//避免转义
 				body = bytes.Replace(body, []byte("\\u0026"), []byte("&"), -1)
 				body = bytes.Replace(body, []byte("\\u003c"), []byte("<"), -1)
 				body = bytes.Replace(body, []byte("\\u003e"), []byte(">"), -1)
@@ -179,7 +175,6 @@ func main() {
 						suc++
 					}
 				}
-
 				defer res.Body.Close()
 			}(openid)
 		}
@@ -207,5 +202,4 @@ func main() {
 	ioutil.WriteFile("./pid", []byte(pid), 0666)
 
 	manners.ListenAndServe(":7767", r)
-
 }
