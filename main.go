@@ -89,6 +89,12 @@ func main() {
 		// }
 		// runtime.GOMAXPROCS(runtime.NumCPU() - 2)
 
+		st, err := json.MarshalIndent(c.DefaultPostForm("url", ""), " ", "  ")
+		if err != nil {
+			fmt.Printf("ceshi%v\n", st)
+			return
+		}
+
 		for openid, _ := range openid_100 {
 
 			wg.Add(1)
@@ -154,11 +160,6 @@ func main() {
 						},
 						Data: dataMsg,
 					}
-				}
-				st, err := json.MarshalIndent(c.DefaultPostForm("url", ""), " ", "  ")
-				if err != nil {
-					fmt.Printf("ceshi%v\n", st)
-					return
 				}
 
 				body, err := json.MarshalIndent(msg, " ", "  ") //struct转->返回[]byte字符串
