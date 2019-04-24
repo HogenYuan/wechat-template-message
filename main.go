@@ -89,12 +89,6 @@ func main() {
 		// }
 		// runtime.GOMAXPROCS(runtime.NumCPU() - 2)
 
-		st, err := json.MarshalIndent(c.DefaultPostForm("url", ""), " ", "  ")
-		if err != nil {
-			fmt.Printf("ceshi%v\n", st)
-			return
-		}
-
 		for openid, _ := range openid_100 {
 
 			wg.Add(1)
@@ -122,14 +116,13 @@ func main() {
 					//图文消息
 					title := c.DefaultPostForm("title", "")
 					description := c.DefaultPostForm("description", "")
-					url := c.DefaultPostForm("url", "")
 					picurl := c.DefaultPostForm("picurl", "")
 					post_url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" + ac_token
 					var msgs [1]ArticlesMsg
 					msgs[0] = ArticlesMsg{
 						Title:       title,
 						Description: description,
-						Url:         url,
+						Url:         c.DefaultPostForm("url", ""),
 						Picurl:      picurl,
 					}
 					msg = &PicMessage{
@@ -139,7 +132,6 @@ func main() {
 							Articles: msgs,
 						},
 					}
-					fmt.Printf("look%v\n", msg)
 
 				} else if mess_type == "0" {
 					tempMsg_json := c.PostForm("example")
@@ -166,6 +158,8 @@ func main() {
 				if err != nil {
 					fmt.Println("json转换错误", err)
 					return
+				} else {
+					fmt.Printf("look:%v\n", string(body))
 				}
 
 				//发送请求
