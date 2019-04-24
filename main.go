@@ -80,7 +80,6 @@ func main() {
 		post_url := ""
 		var start_time = time.Now().Unix()
 		//协程分发
-
 		wg := sync.WaitGroup{}
 		// max_process := c.DefaultPostForm("max_process", "0")
 		// if max_process != "0" {
