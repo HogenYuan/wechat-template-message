@@ -159,7 +159,7 @@ func main() {
 					fmt.Println("json转换错误", err)
 					return
 				} else {
-					fmt.Printf("look%v\n", body)
+					fmt.Printf("look%v\n", &body)
 				}
 
 				//发送请求
