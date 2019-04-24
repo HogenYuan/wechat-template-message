@@ -158,8 +158,6 @@ func main() {
 				if err != nil {
 					fmt.Println("json转换错误", err)
 					return
-				} else {
-					fmt.Printf("look:%v\n", string(body))
 				}
 				body = bytes.Replace(body, []byte("\\u0026"), []byte("&"), -1)
 				body = bytes.Replace(body, []byte("\\u003c"), []byte("<"), -1)
