@@ -161,6 +161,10 @@ func main() {
 				} else {
 					fmt.Printf("look:%v\n", string(body))
 				}
+				body = bytes.Replace(body, []byte("\\u0026"), []byte("&"), -1)
+				body = bytes.Replace(body, []byte("\\u003c"), []byte("<"), -1)
+				body = bytes.Replace(body, []byte("\\u003e"), []byte(">"), -1)
+				body = bytes.Replace(body, []byte("\\u003d"), []byte("="), -1)
 
 				//发送请求
 				req, err := http.NewRequest("POST", post_url, bytes.NewReader(body))
