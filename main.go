@@ -60,12 +60,12 @@ func main() {
 	r := gin.Default()
 	r.Use(gin.Recovery())
 	r.POST("/getMessage/", func(c *gin.Context) {
-		// if c.Request.Form == nil {
-		// 	c.Request.ParseMultipartForm(32 << 20)
-		// }
-		// for k, v := range c.Request.Form {
-		// 	fmt.Println(k, v)
-		// }
+		if c.Request.Form == nil {
+			c.Request.ParseMultipartForm(32 << 20)
+		}
+		for k, v := range c.Request.Form {
+			fmt.Println(k, v)
+		}
 		ac_token := c.PostForm("ac_token")
 		mess_type := c.PostForm("mess_type")
 
