@@ -133,7 +133,7 @@ func main() {
 							Articles: msgs,
 						},
 					}
-					fmt.Printf("look%v\n", &msg)
+					fmt.Printf("look%v\n", msg)
 
 				} else if mess_type == "0" {
 					tempMsg_json := c.PostForm("example")
