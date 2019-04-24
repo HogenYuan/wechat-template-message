@@ -133,6 +133,8 @@ func main() {
 							Articles: msgs,
 						},
 					}
+					fmt.Printf("look%v\n", &msg)
+
 				} else if mess_type == "0" {
 					tempMsg_json := c.PostForm("example")
 					dataMsg := make(map[string]*KeyWordData)
@@ -158,8 +160,6 @@ func main() {
 				if err != nil {
 					fmt.Println("json转换错误", err)
 					return
-				} else {
-					fmt.Printf("look%v\n", &body)
 				}
 
 				//发送请求
