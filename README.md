@@ -1,26 +1,29 @@
-#wechat_message(模板消息接口)
+# wechat_message(模板消息接口)
 
 
-##简介
+## 简介
 开发目的：用于弥补PHP群发模板消息的性能硬伤。
-利用golang能达到不可思议的速度。针对golang的结构体传输数据。
+利用golang能达到不可思议的速度。针对golang的结构体传输符合微信接口的数据。
 
 
-##编译
+## 编译
 
 ```bash
 	go build main.go
 	go run wechat_mesage
 ```
 
-##运行
-```接收
+## 运行
+```golang
 
+	//接收
 	api:"localhost:7767/getMessage"
+
 ```
 
-```停止
+```golang
 
+	//停止
 	api:"localhost:7767/stop"
-	
+
 ```
