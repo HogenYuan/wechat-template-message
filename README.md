@@ -19,7 +19,6 @@
 	 * 接收数据
 	 * api:"post:localhost:7767/getMessage"
 	 */
-	
 	example:{
 		openid:['111','fd2dw','gree']，		//openid数组,需提前切好
 		ac_token : string,					//公众号access_token
@@ -50,7 +49,10 @@
 		picurl:"http://www.baidu.com",		//图文链接
 		url:"http://www.baidu.com"			//可选,跳转链接
 	}
-	 
+	
+	/**
+	 * 返回数据
+	 */
 	return [
 		'total', 							//发送总人数
 		'suc', 								//成功人数
@@ -60,15 +62,14 @@
 ```golang
 	/**
 	 * 停止任务
+	 * api:"get:localhost:7767/stop"
 	 */
-	api:"get:localhost:7767/stop"
 
 ```
 
 ```golang
 	/**
 	 * 查看任务PID
+	 * api:"get:localhost:7767/pid"
 	 */
-	api:"get:localhost:7767/pid"
-
 ```
