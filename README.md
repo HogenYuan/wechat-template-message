@@ -3,7 +3,7 @@
 
 ## Introduction
 - 开发目的：用于弥补PHP群发模板消息的性能硬伤。
-- 利用golang能达到不可思议的速度。针对golang的结构体传输符合微信接口的数据。
+- 利用golang能达到不可思议的速度。针对golang的数据结构传输符合微信接口的数据。
 
 
 ## Installation
